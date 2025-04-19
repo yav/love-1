@@ -54,29 +54,34 @@ function Rectangle:overlaps(r)
               self:isBelow(r))
 end
 
+--- Return the corrdinates of the bottom roght correnr
+--- @return Vec2D
+function Rectangle:bottomRight()
+  return self.topLeft:clone():add(self.dim)
+end
+
+--- [const] Do we contain the given point
+--- @param v Vec2D
+--- @return boolean
+function Rectangle:contains(v)
+  local lim = self:bottomRight()
+  return self.topLeft.x <= v.x and v.x < lim.x and 
+         self.topLeft.y <= v.y and v.y < lim.y
+end
+
 --- [const] Draw a rectangle
 function Rectangle:draw()
   love.graphics.rectangle("fill",self.topLeft.x, self.topLeft.y, self.dim.x, self.dim.y)
 end
 
---- [const] Compute the corrdinates occupied by this rectangle
---- on a grid of squares of the given size.
---- @param size number Size of each square on a grid
---- @return table _ Vec2D array with the locations on the grid
-function Rectangle:gridLocs(size)
-  local xs = {}
-  local last = self.topLeft:clone():add(self.dim)
-  local row = self.topLeft:gridLoc(size)
-  while size * row.y < last.y do
-    local col = row:clone()
-    while size * col.x < last.x do
-      xs[#xs+1] = col:clone()
-      col.x = col.x + 1
-    end
-    row.y = row.y + 1
-  end
-
-  return xs
+--- [const] Compute a bounding rectangle on a grid
+--- @param size number Size of grid squares
+--- @return Rectangle _ in grid coordinates
+function Rectangle:toGrid(size)  
+  local s = 1 / size
+  local start = self.topLeft:clone():scale(s):floor()
+  local lim   = self:bottomRight():scale(s):ceil()
+  return Rectangle:new(start,lim:sub(start))
 end
 
 function meta:__tostring()

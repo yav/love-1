@@ -4,14 +4,14 @@ require "controls"
 function love.draw()
 
   local grid = 20
-  local playerGrid = state.player:gridLocs(grid)
+  local playerGrid = state.player:toGrid(grid)
   
   love.graphics.setColor(255,255,255)
   for row = 1, 50 do
     local r = row - 1
     for col = 1, 50 do
       local c = col - 1
-      if Vec2D:new(c,r):isOneOf(playerGrid) then
+      if playerGrid:contains(Vec2D:new(c,r)) then
         love.graphics.setColor(0,0,255)
       else
         love.graphics.setColor(255,255,255)
