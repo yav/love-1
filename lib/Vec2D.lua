@@ -83,6 +83,23 @@ function Vec2D:distanceTo(v)
   return math.sqrt(self:distance2To(v))
 end
 
+--- [const] Compute the coordinates of this vector on a grid.
+--- @param size number Size of ach square on the grid
+--- @return Vec2D coordinates on the grid (0 based)
+function Vec2D:gridLoc(size)
+  return Vec2D:new(math.floor(self.x/size), math.floor(self.y/size))
+end
+
+--- [const] Is this vector one of the given ones
+--- @param xs table of Vec2D
+--- @return boolean
+function Vec2D:isOneOf(xs)
+  for i = 1, #xs do
+    if self == xs[i] then return true end
+  end
+  return false
+end
+
 function meta:__tostring()
   return "(" .. self.x .. ", " .. self.y .. ")"
 end

@@ -54,8 +54,29 @@ function Rectangle:overlaps(r)
               self:isBelow(r))
 end
 
+--- [const] Draw a rectangle
 function Rectangle:draw()
   love.graphics.rectangle("fill",self.topLeft.x, self.topLeft.y, self.dim.x, self.dim.y)
+end
+
+--- [const] Compute the corrdinates occupied by this rectangle
+--- on a grid of squares of the given size.
+--- @param size number Size of each square on a grid
+--- @return table _ Vec2D array with the locations on the grid
+function Rectangle:gridLocs(size)
+  local xs = {}
+  local last = self.topLeft:clone():add(self.dim)
+  local row = self.topLeft:gridLoc(size)
+  while size * row.y < last.y do
+    local col = row:clone()
+    while size * col.x < last.x do
+      xs[#xs+1] = col:clone()
+      col.x = col.x + 1
+    end
+    row.y = row.y + 1
+  end
+
+  return xs
 end
 
 function meta:__tostring()

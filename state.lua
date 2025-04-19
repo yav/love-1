@@ -7,7 +7,7 @@ require "lib.Vec2D"
 state = {}
 
 function love.load()
-  state.player = Rectangle:new(Vec2D:new(0,0), Vec2D:new(50,60))
+  state.player = Rectangle:new(Vec2D:new(50,60), Vec2D:new(50,60))
   state.speed  = 75
   state.dir    = Vec2D:new(0,0)
   state.other  = Rectangle:new(Vec2D:new(40,20), Vec2D:new(32,32))
