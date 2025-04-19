@@ -44,7 +44,10 @@ end
 --- Make this a unit vector. Returns `self.`
 --- @return Vec2D
 function Vec2D:toUnit()
-    self:scale(1/self:len())
+    local n = self:len()
+    if not n == 0 then
+      self:scale(1/n)
+    end
     return self
 end
 
@@ -63,7 +66,7 @@ end
 --- [const] Returns a new vector with the same value as this one.
 --- @return Vec2D
 function Vec2D:clone()
-  return Vec2D(self.x,self.y)
+  return Vec2D:new(self.x,self.y)
 end
 
 --- [const] Returns the square of the distance to another vector.

@@ -1,15 +1,13 @@
-require "lib.Vec2D"
 require "state"
-
-function love.load()
-  state:init()
-end
-
-
-
+require "controls"
 
 function love.draw()
+  local clash = state.player:overlaps(state.other)
+  if clash then
+    love.graphics.setColor(255,0,0)
+  else
+    love.graphics.setColor(255,255,0)
+  end
   state.player:draw()
   state.other:draw()
-  love.graphics.print(tostring(state.player:overlaps(state.other)), 200, 200)
 end
