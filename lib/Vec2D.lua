@@ -18,35 +18,35 @@ end
 --- The vector (0,0)
 Vec2D.zero = Vec2D:new(0,0)
 
---- In place addition.  Returns `self`.
+--- In place addition.
 --- @param v Vec2D
---- @return Vec2D
+--- @return Vec2D self
 function Vec2D:add(v)
   self.x = self.x + v.x
   self.y = self.y + v.y
   return self
 end
 
---- In place subtraction.  Returns `self`.
+--- In place subtraction.
 --- @param v Vec2D
---- @return Vec2D
+--- @return Vec2D self
 function Vec2D:sub(v)
   self.x = self.x - v.x
   self.y = self.y - v.y
   return self
 end
 
---- Scale this vector.  Returns `self`.
+--- Scale this vector.
 --- @param s number
---- @return Vec2D
+--- @return Vec2D self
 function Vec2D:scale(s)
   self.x = s * self.x
   self.y = s * self.y
   return self
 end
 
---- Make this a unit vector. Returns `self.`
---- @return Vec2D
+--- Make this a unit vector.
+--- @return Vec2D self
 function Vec2D:toUnit()
     local n = self:len()
     if not n == 0 then
@@ -101,16 +101,6 @@ function Vec2D:ceil()
   self.x = math.ceil(self.x)
   self.y = math.ceil(self.y)
   return self
-end
-
---- [const] Is this vector one of the given ones
---- @param xs table of Vec2D
---- @return boolean
-function Vec2D:isOneOf(xs)
-  for i = 1, #xs do
-    if self == xs[i] then return true end
-  end
-  return false
 end
 
 function meta:__tostring()
