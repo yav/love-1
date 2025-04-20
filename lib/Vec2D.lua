@@ -4,6 +4,7 @@
 Vec2D = {}
 local meta = { __index = Vec2D }
 
+
 --- Create a new vector.
 --- @param x number
 --- @param y number
@@ -13,6 +14,9 @@ function Vec2D:new(x,y)
   setmetatable(obj,meta)
   return obj
 end
+
+--- The vector (0,0)
+Vec2D.zero = Vec2D:new(0,0)
 
 --- In place addition.  Returns `self`.
 --- @param v Vec2D

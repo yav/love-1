@@ -3,9 +3,9 @@ require "controls"
 
 function love.draw()
 
-  local grid = 20
+  local grid = state.gridSize
   local playerGrid = state.player:toGrid(grid)
-  
+
   love.graphics.setColor(255,255,255)
   for row = 1, 50 do
     local r = row - 1
@@ -20,12 +20,12 @@ function love.draw()
     end
   end
 
-  if state.player:overlaps(state.other) then
-    love.graphics.setColor(255,0,0)
-  else
-    love.graphics.setColor(255,255,0)
-  end
+  local c = state.color
+  love.graphics.setColor(c.r,c.g,c.b)
   state.player:draw()
-  state.other:draw()
+  love.graphics.setColor(255,255,0)
+  for _,r in ipairs(state.objs) do
+    r:draw()
+  end
 
 end

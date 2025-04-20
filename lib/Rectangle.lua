@@ -76,8 +76,8 @@ end
 
 --- [const] Compute a bounding rectangle on a grid
 --- @param size number Size of grid squares
---- @return Rectangle _ in grid coordinates
-function Rectangle:toGrid(size)  
+--- @return Rectangle r in grid coordinates
+function Rectangle:toGrid(size)
   local s = 1 / size
   local start = self.topLeft:clone():scale(s):floor()
   local lim   = self:bottomRight():scale(s):ceil()
