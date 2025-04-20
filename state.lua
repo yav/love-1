@@ -2,6 +2,8 @@ require "lib.Rectangle"
 require "lib.Vec2D"
 require "lib.Map2D"
 require "lib.CollisionMap"
+require "Moving"
+require "Enemy"
 
 --- @class State
 state = {}
@@ -13,10 +15,15 @@ local function addObj(r)
 end
 
 function love.load()
-  state.player    = Rectangle:new(Vec2D:new(0,0), Vec2D:new(50,60))
-  state.speed     = 200
-  state.dir       = Vec2D:new(0,0)
-  state.color     = {r = 255,g = 255,b = 0}
+  local player      = Moving:new()
+  player.bbox.dim   = Vec2D:new(50,60)
+  player.speed      = 200
+  state.player      = player
+
+  state.enemy       = Enemy:new()
+  state.enemy.move.bbox.topLeft = Vec2D:new(200,200)
+
+  state.color     = {r = 255,g = 0,b = 255}
 
   state.obstacles = CollisionMap:new(100)
   state.objs      = {}
@@ -32,17 +39,8 @@ end
 
 
 function love.update(dt)
-  local spd = state.speed * dt
-  local delta = state.dir:clone():scale(spd)
-  if delta == Vec2D.zero then return end
-  local new = state.player.topLeft:clone():add(delta)
-  local newR = Rectangle:new(new, state.player.dim)
-  local blocks = state.obstacles:findCollisions(newR)
-  for _,r in ipairs(blocks) do
-    newR.topLeft:add(state.player:clash(r,spd))
-  end
-  -- if state.obstacles:hasCollisions(newR) then return end
-  state.player = newR
+  state.player:update(dt)
+  state.enemy:update(dt)
 end
 
 

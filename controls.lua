@@ -1,17 +1,17 @@
 
 local function keys(s,d)
   if s == 'w' then
-    state.dir.y = state.dir.y - d
+    state.player.dir.y = state.player.dir.y - d
   elseif s == 's' then
-    state.dir.y = state.dir.y + d
+    state.player.dir.y = state.player.dir.y + d
   elseif s == 'a' then
-    state.dir.x = state.dir.x - d
+    state.player.dir.x = state.player.dir.x - d
   elseif s == 'd' then
-    state.dir.x = state.dir.x + d
+    state.player.dir.x = state.player.dir.x + d
   else
     return
   end
-  state.dir:toUnit()
+  state.player.dir:toUnit()
 end
 
 function love.keypressed(k,s,isrepeat)
