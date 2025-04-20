@@ -24,7 +24,7 @@ function CollisionMap:addObj(r,obj)
   end
 end
 
---- Check if the givn rectangle collides with anything in the map.
+--- [const] Check if the givn rectangle collides with anything in the map.
 --- @param r Rectangle
 --- @return boolean
 function CollisionMap:hasCollisions(r)
@@ -51,7 +51,7 @@ function CollisionMap:hasCollisions(r)
   end
 
 
---- Find objects in the map colliding wth the given rectangle.
+--- [const] Find objects in the map colliding wth the given rectangle.
 --- @param r Rectangle
 --- @return table
 function CollisionMap:findCollisions(r)
