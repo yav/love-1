@@ -9,37 +9,36 @@ function Map2D:new()
   return setmetatable(obj, meta)
 end
 
---- Get the object at the given index. If the index does not exist,
---- we create, with its value being an empty table.
---- @param v Vec2D coordinate to lookup
---- @return table _ the things stored at the given index
-function Map2D:lookup(v)
-  local col = self[v.x]
-  if col == nil then
-    col = {}
-    self[v.x] = col
-  end
-  local row = col[v.y]
-  if row == nil then
-    row = {}
-    col[v.y] = row
-  end
-  return row
+--- [const] Get the object at the given index.
+--- @param x any First key
+--- @param y any Second key
+--- @return any _ The element stored at the given index or `nil`
+function Map2D:lookup(x,y)
+  local d1 = self[x]
+  if d1 == nil then return nil end
+  return d1[y]
 end
 
---- Make a new table with fresh indexes.  The stored eleemnts are shared.
-function Map2D:clone()
-  local t = Map2D:new()
-  for c,col in ipairs(self) do
-    local co = {}
-    for r,row in ipairs(col) do
-      local ro = {}
-      for i,el in ipairs(row) do
-        ro[i] = el
-      end
-      co[r] = ro
-    end
-    t[c] = co
+
+
+
+--- Get the object at the given index. If the index does not exist,
+--- then we create it, and store the given dflt in the map.
+--- @param x any
+--- @param y any
+--- @param dflt any
+--- @return any _ The thing stored at the given index.
+function Map2D:lookupWithDefault(x,y,dflt)
+  local d1 = self[x]
+  if d1 == nil then
+    d1 = {}
+    self[x] = d1
   end
-  return t
+  local d2 = d1[y]
+  if d2 == nil then
+    d1[y] = dflt
+    return dflt
+  else
+    return d2
+  end
 end

@@ -7,8 +7,8 @@ Rectangle = {}
 local meta = { __index = Rectangle }
 
 --- Create a new rectange.
---- @param topLeft Vec2D  Coordinate of top-left corner
---- @param dim     Vec2D  Dimensiosn of the rectangle\
+--- @param topLeft Vec2D  Coordinate of top-left corner.
+--- @param dim     Vec2D  Dimensions of the rectangle.
 --- @return Rectangle
 function Rectangle:new(topLeft,dim)
   local obj = { topLeft = topLeft, dim = dim }
@@ -54,13 +54,13 @@ function Rectangle:overlaps(r)
               self:isBelow(r))
 end
 
---- Return the corrdinates of the bottom roght correnr
+--- Return the corrdinates of the bottom roght correr.
 --- @return Vec2D
 function Rectangle:bottomRight()
   return self.topLeft:clone():add(self.dim)
 end
 
---- [const] Do we contain the given point
+--- [const] Do we contain the given point.
 --- @param v Vec2D
 --- @return boolean
 function Rectangle:contains(v)
@@ -74,9 +74,9 @@ function Rectangle:draw()
   love.graphics.rectangle("fill",self.topLeft.x, self.topLeft.y, self.dim.x, self.dim.y)
 end
 
---- [const] Compute a bounding rectangle on a grid
---- @param size number Size of grid squares
---- @return Rectangle r in grid coordinates
+--- [const] Compute a bounding rectangle on a grid.
+--- @param size number Size of grid squares.
+--- @return Rectangle r In grid coordinates.
 function Rectangle:toGrid(size)
   local s = 1 / size
   local start = self.topLeft:clone():scale(s):floor()
