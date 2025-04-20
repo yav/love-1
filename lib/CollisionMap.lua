@@ -24,6 +24,25 @@ function CollisionMap:addObj(r,obj)
   end
 end
 
+function CollisionMap:removeObj(r,obj)
+  local grect = r:toGrid(self.size)
+  local lim   = grect:bottomRight()
+  for x = grect.topLeft.x, lim.x - 1 do
+    for y = grect.topLeft.y, lim.y - 1 do
+      local os = self.data:lookup(x,y)
+      if not (os == nil) then
+        local newOs = {}
+        for _,e in ipairs(os) do
+          if not (e.obj == obj) then
+            newOs[#newOs+1] = e
+          end
+        end
+        self.data:set(x,y,newOs)
+      end
+    end
+  end
+end
+
 --- [const] Check if the givn rectangle collides with anything in the map.
 --- @param r Rectangle
 --- @return boolean

@@ -19,12 +19,17 @@ function love.load()
   player.bbox.dim   = Vec2D:new(50,60)
   player.speed      = 200
   state.player      = player
-
-  state.enemy       = Enemy:new()
-  state.enemy.move.bbox.topLeft = Vec2D:new(200,200)
+  local es = {}
+  for i = 1,10 do
+    local e = Enemy:new()
+    e.move.bbox.topLeft = Vec2D:new(200+40*i,200)
+    es[#es+1] = e
+  end
+  state.enemies = es
 
   state.color     = {r = 255,g = 0,b = 255}
 
+  state.movingMap = CollisionMap:new(100)
   state.obstacles = CollisionMap:new(100)
   state.objs      = {}
   for i = 1,30 do
@@ -40,7 +45,9 @@ end
 
 function love.update(dt)
   state.player:update(dt)
-  state.enemy:update(dt)
+  for _,e in ipairs(state.enemies) do
+    e:update(dt)
+  end
 end
 
 

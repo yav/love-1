@@ -19,7 +19,14 @@ function Map2D:lookup(x,y)
   return d1[y]
 end
 
-
+function Map2D:set(x,y,v)
+  local d1 = self[x]
+  if d1 == nil then
+    d1 = {}
+    self[x] = d1
+  end
+  d1[y] = v
+end
 
 
 --- Get the object at the given index. If the index does not exist,
