@@ -88,6 +88,6 @@ function meta:__tostring()
   return "{ loc = " .. tostring(self.topLeft) .. ", dim = " .. tostring(self.dim) .. " }"
 end
 
-function meta:__equal(r)
+function meta:__eq(r)
   return self.topLeft == r.topLeft and self.dim == r.dim
 end

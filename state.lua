@@ -7,32 +7,50 @@ require "lib.CollisionMap"
 state = {}
 
 local function addObj(r)
-  state.obstacles:addObj(r, {})
+  state.obstacles:addObj(r, r)
   local os = state.objs
   os[#os + 1] = r
 end
 
 function love.load()
-  state.player    = Rectangle:new(Vec2D:new(50,60), Vec2D:new(50,60))
-  state.speed     = 75
+  state.player    = Rectangle:new(Vec2D:new(0,0), Vec2D:new(50,60))
+  state.speed     = 100
   state.dir       = Vec2D:new(0,0)
   state.color     = {r = 255,g = 255,b = 0}
 
   state.obstacles = CollisionMap:new(100)
   state.objs      = {}
-  addObj(Rectangle:new(Vec2D:new(17,27), Vec2D:new(100,57)))
+  for i = 1,30 do
+    local sz = math.random(4,16)
+    local x  = math.random(100,800)
+    local y  = math.random(100,600)
+    local pos = Vec2D:new(x,y)
+    local dim = Vec2D:new(sz,sz)
+    addObj(Rectangle:new(pos,dim))
+  end
 end
 
 
 function love.update(dt)
-  local delta = state.dir:clone():scale(state.speed * dt)
-  state.player.topLeft:add(delta)
+  local spd = state.speed * dt
+  local delta = state.dir:clone():scale(spd)
   if delta == Vec2D.zero then return end
-  if state.obstacles:hasCollisions(state.player) then
-    state.color = {r = 255,g = 0,b = 0}
-  else
-    state.color = {r = 255,g = 255,b = 255}
+  local new = state.player.topLeft:clone():add(delta)
+  local newR = Rectangle:new(new, state.player.dim)
+  local blocks = state.obstacles:findCollisions(newR)
+  local dx = 0
+  local dy = 0
+  for _,r in ipairs(blocks) do
+    if r:isBelow(state.player) then dy = dy - spd 
+    elseif r:isAbove(state.player) then dy = dy + spd
+    end
+    if r:isLeftOf(state.player) then dx = dx + spd
+    elseif r:isRightOf(state.player) then dx = dx - spd
+    end
   end
+  newR.topLeft:add(Vec2D:new(dx,dy))
+  -- if state.obstacles:hasCollisions(newR) then return end
+  state.player = newR
 end
 
 
