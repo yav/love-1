@@ -14,7 +14,7 @@ end
 
 function love.load()
   state.player    = Rectangle:new(Vec2D:new(0,0), Vec2D:new(50,60))
-  state.speed     = 100
+  state.speed     = 200
   state.dir       = Vec2D:new(0,0)
   state.color     = {r = 255,g = 255,b = 0}
 
@@ -38,17 +38,9 @@ function love.update(dt)
   local new = state.player.topLeft:clone():add(delta)
   local newR = Rectangle:new(new, state.player.dim)
   local blocks = state.obstacles:findCollisions(newR)
-  local dx = 0
-  local dy = 0
   for _,r in ipairs(blocks) do
-    if r:isBelow(state.player) then dy = dy - spd 
-    elseif r:isAbove(state.player) then dy = dy + spd
-    end
-    if r:isLeftOf(state.player) then dx = dx + spd
-    elseif r:isRightOf(state.player) then dx = dx - spd
-    end
+    newR.topLeft:add(state.player:clash(r,spd))
   end
-  newR.topLeft:add(Vec2D:new(dx,dy))
   -- if state.obstacles:hasCollisions(newR) then return end
   state.player = newR
 end

@@ -54,6 +54,20 @@ function Rectangle:overlaps(r)
               self:isBelow(r))
 end
 
+--- Compute the reaction if this rectangle is about to clash into another.
+--- @param r Rectangle
+--- @param speed number
+--- @return Vec2D
+function Rectangle:clash(r,speed)
+  local dx = 0
+  local dy = 0
+  if self:isLeftOf(r) then dx = dx - speed
+  elseif self:isRightOf(r) then dx = dx + speed end
+  if self:isAbove(r) then dy = dy - speed
+  elseif self:isBelow(r) then dy = dy + speed end
+  return Vec2D:new(dx,dy)
+end
+
 --- Return the corrdinates of the bottom roght correr.
 --- @return Vec2D
 function Rectangle:bottomRight()
