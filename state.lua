@@ -39,25 +39,27 @@ function love.update(dt)
   state.player.topLeft:add(delta)
   local grect = state.player:toGrid(state.gridSize)
   local lim = grect:bottomRight()
+  local overlaps = false
   for x = grect.topLeft.x, lim.x - 1 do
     for y = grect.topLeft.y, lim.y - 1 do
       local os = state.grid:lookup(x,y)
-      local overlaps = false
       if not (os == nil) then
         for _,o in ipairs(os) do
           print("check " .. tostring(state.player.topLeft))
           if state.player:overlaps(o) then
             overlaps = true
-            break
+            goto exit
           end
         end
       end
-      if overlaps then
-        state.color = {r = 255,g = 0,b = 0}
-      else
-        state.color = {r = 255,g = 255,b = 255}
-      end
     end
+  end
+
+  ::exit::
+  if overlaps then
+    state.color = {r = 255,g = 0,b = 0}
+  else
+    state.color = {r = 255,g = 255,b = 255}
   end
 end
 
