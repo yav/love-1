@@ -5,7 +5,7 @@ local meta = { __index = CollisionMap }
 
 function CollisionMap:new(size)
   local obj = {}
-  obj.size = size
+  obj.size = size -- of each square
   obj.data = Map2D:new()
   return setmetatable(obj, meta)
 end
@@ -19,7 +19,7 @@ function CollisionMap:addObj(r,obj)
   for x = grect.topLeft.x, lim.x - 1 do
     for y = grect.topLeft.y, lim.y - 1 do
       local os = self.data:lookupWithDefault(x,y,{})
-      os[#os + 1] = { rect = r, obj = obj }
+      os[obj] = r
     end
   end
 end
@@ -30,15 +30,7 @@ function CollisionMap:removeObj(r,obj)
   for x = grect.topLeft.x, lim.x - 1 do
     for y = grect.topLeft.y, lim.y - 1 do
       local os = self.data:lookup(x,y)
-      if not (os == nil) then
-        local newOs = {}
-        for _,e in ipairs(os) do
-          if not (e.obj == obj) then
-            newOs[#newOs+1] = e
-          end
-        end
-        self.data:set(x,y,newOs)
-      end
+      if not (os == nil) then os[obj] = nil end
     end
   end
 end
@@ -54,13 +46,10 @@ function CollisionMap:hasCollisions(r)
       for y = grect.topLeft.y, lim.y - 1 do
         local os = self.data:lookup(x,y)
         if not (os == nil) then
-          for _,o in ipairs(os) do
-            local candidate = o.obj
-            if known[candidate] == nil then
-              if r:overlaps(o.rect) then
-                return true
-              end
-              known[candidate] = true -- any non-nil value works
+          for o,r1 in pairs(os) do
+            if known[o] == nil then
+              if r:overlaps(r1) then return true end
+              known[o] = true -- any non-nil value works
             end
           end
         end
@@ -82,13 +71,12 @@ function CollisionMap:findCollisions(r)
     for y = grect.topLeft.y, lim.y - 1 do
       local os = self.data:lookup(x,y)
       if not (os == nil) then
-        for _,o in ipairs(os) do
-          local candidate = o.obj
-          if known[candidate] == nil then
-            if r:overlaps(o.rect) then
-              objs[#objs + 1] = candidate
+        for o,r1 in pairs(os) do
+          if known[o] == nil then
+            if r:overlaps(r1) then
+              objs[#objs + 1] = o
             end
-            known[candidate] = true -- any non-nil value works
+            known[o] = true -- any non-nil value works
           end
         end
       end
