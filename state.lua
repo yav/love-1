@@ -19,6 +19,7 @@ function love.load()
   player.bbox.dim   = Vec2D:new(50,60)
   player.speed      = 200
   state.player      = player
+
   local es = {}
   for i = 1,10 do
     local e = Enemy:new()

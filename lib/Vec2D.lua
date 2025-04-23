@@ -15,6 +15,13 @@ function Vec2D:new(x,y)
   return obj
 end
 
+--- The coordinates of the vector.
+--- @return number x
+--- @return number y
+function Vec2D:parts()
+  return self.x,self.y
+end
+
 --- The vector (0,0)
 Vec2D.zero = Vec2D:new(0,0)
 
