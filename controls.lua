@@ -16,6 +16,7 @@ end
 
 function love.keypressed(k,s,isrepeat)
   if isrepeat then return end
+  if s == 'space' then state.player:startDash(); return end
   keys(s,1)
 end
 
