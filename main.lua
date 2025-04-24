@@ -10,6 +10,8 @@ local function focusPlayer()
 end
 
 function love.draw()
+  love.graphics.setColor(255,255,255)
+  love.graphics.print("FPS: " .. tostring(love.timer.getFPS()) .. "; WASD to move, Space to dash")
   focusPlayer()
   love.graphics.setColor(255,255,0)
   for _,r in ipairs(state.objs) do
