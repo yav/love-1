@@ -33,7 +33,7 @@ function love.load()
   state.movingMap = CollisionMap:new(100)
   state.obstacles = CollisionMap:new(100)
   state.objs      = {}
-  for i = 1,30 do
+  for i = 1,10 do
     local sz = math.random(4,16)
     local x  = math.random(100,800)
     local y  = math.random(100,600)

@@ -1,4 +1,6 @@
 
+-- XXX: don't modify player position directly.
+-- e.g., we may want to implement dash only going in a straight line
 local function keys(s,d)
   if s == 'w' then
     state.player.dir.y = state.player.dir.y - d
