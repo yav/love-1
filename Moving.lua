@@ -26,12 +26,30 @@ function Moving:startDash()
 end
 
 function Moving:draw()
-  local n = #self.dashTrace
   for i,pos in ipairs(self.dashTrace) do
-    love.graphics.setColor(state.color.r, state.color.g, state.color.b, 255 - i * k)
+    love.graphics.setColor(state.color.r, state.color.g, state.color.b, i/#self.dashTrace)
     Rectangle:new(pos,self.bbox.dim):draw()
   end
   self.bbox:draw()
+  if self.dashing <= 0 then
+    local x,y = self.bbox.topLeft:parts()
+    local w,h = self.bbox.dim:parts()
+    local len = 2*(w+h) * (1 + self.dashing)
+    love.graphics.setColor(255,255,255)
+    local todo = len
+    if todo > w then todo = w end
+    love.graphics.line(x,y,x+todo,y)
+    len = len - todo
+    todo = len
+    if todo > h then todo = h end
+    love.graphics.line(x+w,y,x+w,y+todo)
+    len = len - todo
+    todo = len
+    if todo > w then todo = w end
+    love.graphics.line(x+w-todo,y+h,x+w,y+h)
+    len = len - todo
+    love.graphics.line(x,y+h-len,x,y+h)
+  end
 end
 
 --- @param dt number
@@ -66,7 +84,7 @@ function Moving:update(dt)
   if dash > 0 then
     dash = dash - dt
     if dash < 0 then
-      dash = -2
+      dash = -1
       self.dashTrace = {}
     end
   elseif dash < 0 then
