@@ -34,23 +34,8 @@ function Moving:draw()
   end
   self.bbox:draw()
   if not self.dashTimer:isActive() then
-    local x,y = self.bbox.topLeft:parts()
-    local w,h = self.bbox.dim:parts()
-    local len = 2*(w+h) * self.dashTimer:progress()
     love.graphics.setColor(255,255,255)
-    local todo = len
-    if todo > w then todo = w end
-    love.graphics.line(x,y,x+todo,y)
-    len = len - todo
-    todo = len
-    if todo > h then todo = h end
-    love.graphics.line(x+w,y,x+w,y+todo)
-    len = len - todo
-    todo = len
-    if todo > w then todo = w end
-    love.graphics.line(x+w-todo,y+h,x+w,y+h)
-    len = len - todo
-    love.graphics.line(x,y+h-len,x,y+h)
+    love.graphics.line(self.bbox:outline(self.dashTimer:progress()))
   end
 end
 

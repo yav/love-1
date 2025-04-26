@@ -68,6 +68,38 @@ function Rectangle:clash(r,speed)
   return Vec2D:new(dx,dy)
 end
 
+--- Compute a sequence of coordinates around the perimeter
+--- of this rectangle.
+--- @param p number percentage (0--1) of perimiter to cover
+--- @return table
+function Rectangle:outline(p)
+  local x,y = self.topLeft:parts()
+  local w,h = self.dim:parts()
+  local len = 2*(w+h) * p
+  local cs = {}
+  local function push(a) cs[#cs+1] = a end
+  push(x); push(y)
+
+  local todo = math.min(len,w)
+  push(x+todo); push(y)
+  len = len - todo
+  if len <= 0 then return cs end
+
+  todo = math.min(len,h)
+  push(x+w); push(y+todo)
+  len = len - todo
+  if len <= 0 then return cs end
+
+  todo = math.min(len,w)
+  push(x+w-todo); push(y+h)
+  if len <= 0 then return cs end
+
+  len = len - todo
+  push(x); push(y+h-len)
+  return cs
+
+end
+
 --- Return the corrdinates of the bottom roght correr.
 --- @return Vec2D
 function Rectangle:bottomRight()
