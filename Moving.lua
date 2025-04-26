@@ -1,11 +1,12 @@
 require "lib.Vec2D"
 require "lib.Rectangle"
+require "lib.EffectTimer"
 
 --- @class Moving
---- @field speed number
---- @field dir   Vec2D
---- @field bbox  Rectangle
---- @field dashing number   Time left to dash
+--- @field speed     number
+--- @field dir       Vec2D
+--- @field bbox      Rectangle
+--- @field dashTimer EffectTimer
 --- @field dashTrace table
 Moving = {}
 local meta = { __index = Moving }
@@ -13,16 +14,17 @@ local meta = { __index = Moving }
 function Moving:new()
   local obj = {}
   obj.speed = 0
-  obj.dashing = 0
+  obj.dashTimer = EffectTimer:new(0.25,1)
   obj.dashTrace = {}
+  obj.dashTimer.onFinished = function () obj.dashTrace = {} end
+
   obj.dir   = Vec2D.zero:clone()
   obj.bbox  = Rectangle:new(Vec2D.zero:clone(), Vec2D.zero:clone())
   return setmetatable(obj, meta)
 end
 
-
 function Moving:startDash()
-  if self.dashing == 0 then self.dashing = 0.25 end
+  self.dashTimer:start()
 end
 
 function Moving:draw()
@@ -31,10 +33,10 @@ function Moving:draw()
     Rectangle:new(pos,self.bbox.dim):draw()
   end
   self.bbox:draw()
-  if self.dashing <= 0 then
+  if not self.dashTimer:isActive() then
     local x,y = self.bbox.topLeft:parts()
     local w,h = self.bbox.dim:parts()
-    local len = 2*(w+h) * (1 + self.dashing)
+    local len = 2*(w+h) * self.dashTimer:progress()
     love.graphics.setColor(255,255,255)
     local todo = len
     if todo > w then todo = w end
@@ -55,11 +57,13 @@ end
 --- @param dt number
 function Moving:update(dt)
   local speed = self.speed
-  local dash  = self.dashing
-  if dash > 0 then
+  self.dashTimer:update(dt)
+  local dashing = self.dashTimer:isActive()
+  if dashing then
     self.dashTrace[#self.dashTrace + 1] = self.bbox.topLeft:clone()
     speed = 3 * speed
   end
+
   local spd   = speed * dt
   local delta = self.dir:clone():scale(spd)
   if not (delta == Vec2D.zero) then
@@ -72,7 +76,7 @@ function Moving:update(dt)
       newP:add(self.bbox:clash(r,spd))
     end
 
-    if dash == 0 then
+    if not dashing then
       local movs = state.movingMap:findCollisions(newR)
       for _,r in ipairs(movs) do
         newP:add(self.bbox:clash(r.bbox,spd))
@@ -81,16 +85,5 @@ function Moving:update(dt)
     self.bbox = newR
     state.movingMap:addObj(self.bbox, self)
   end
-  if dash > 0 then
-    dash = dash - dt
-    if dash < 0 then
-      dash = -1
-      self.dashTrace = {}
-    end
-  elseif dash < 0 then
-    dash = dash + dt
-    if dash > 0 then dash = 0 end
-  end
-  self.dashing = dash
 end
 
