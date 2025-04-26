@@ -86,19 +86,14 @@ function EffectTimer:update(dt)
     if t <= 0 then
       callFinished(self)
       t = -(self.cooldown + t)
-      if t >= 0 then
-        t = 0
-        callReady(self)
-      end
+      if t >= 0 then t = 0 end
     end
   else
     t = t + dt
-    if t >= 0 then
-      t = 0
-      callReady(self)
-    end
+    if t >= 0 then t = 0 end
   end
   self.timer = t
+  if t == 0 then callReady(self) end
 end
 
 function meta:__tostring()
