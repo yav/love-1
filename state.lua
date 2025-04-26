@@ -2,7 +2,7 @@ require "lib.Rectangle"
 require "lib.Vec2D"
 require "lib.Map2D"
 require "lib.CollisionMap"
-require "Moving"
+require "Entity"
 require "Enemy"
 
 --- @class State
@@ -15,7 +15,7 @@ local function addObj(r)
 end
 
 function love.load()
-  local player      = Moving:new()
+  local player      = Entity:new()
   player.bbox.dim   = Vec2D:new(50,60)
   player.speed      = 200
   state.player      = player

@@ -2,16 +2,16 @@ require "lib.Vec2D"
 require "lib.Rectangle"
 require "lib.EffectTimer"
 
---- @class Moving
+--- @class Entity
 --- @field speed     number
 --- @field dir       Vec2D
 --- @field bbox      Rectangle
 --- @field dashTimer EffectTimer
 --- @field dashTrace table
-Moving = {}
-local meta = { __index = Moving }
+Entity = {}
+local meta = { __index = Entity }
 
-function Moving:new()
+function Entity:new()
   local obj = {}
   obj.speed = 0
   obj.dashTimer = EffectTimer:new(0.25,1)
@@ -23,11 +23,11 @@ function Moving:new()
   return setmetatable(obj, meta)
 end
 
-function Moving:startDash()
+function Entity:startDash()
   self.dashTimer:start()
 end
 
-function Moving:draw()
+function Entity:draw()
   for i,pos in ipairs(self.dashTrace) do
     love.graphics.setColor(state.color.r, state.color.g, state.color.b, i/#self.dashTrace)
     Rectangle:new(pos,self.bbox.dim):draw()
@@ -40,7 +40,7 @@ function Moving:draw()
 end
 
 --- @param dt number
-function Moving:update(dt)
+function Entity:update(dt)
   local speed = self.speed
   self.dashTimer:update(dt)
   local dashing = self.dashTimer:isActive()

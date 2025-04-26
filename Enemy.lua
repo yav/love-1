@@ -1,12 +1,12 @@
 require "lib.Vec2D"
 require "lib.Rectangle"
-require "Moving"
+require "Entity"
 
 Enemy = {}
 local meta = { __index = Enemy }
 
 function Enemy:new()
-  local move = Moving:new()
+  local move = Entity:new()
   move.bbox.dim = Vec2D:new(32,32)
   move.speed = 150
   move.dir = Vec2D:new(1,1)
