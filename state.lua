@@ -17,16 +17,16 @@ local function addObj(r)
 end
 
 function love.load()
-  local player      = Entity:new()
-  player.bbox.dim   = Vec2D:new(50,60)
-  player.speed      = 200
-  player.color      = Color:new(255,0,255,1)
-  state.player      = player
+  local player          = Entity:new()
+  player.move.bbox.dim  = Vec2D:new(50,60)
+  player.move.speed     = 200
+  player.color          = Color:new(255,0,255,1)
+  state.player          = player
 
   local es = {}
   for i = 1,10 do
     local e = Enemy:new()
-    e.move.bbox.topLeft = Vec2D:new(200+40*i,200)
+    e.ent.move.bbox.topLeft = Vec2D:new(200+40*i,200)
     es[#es+1] = e
   end
   state.enemies = es

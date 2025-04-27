@@ -1,19 +1,19 @@
 
 -- XXX: don't modify player position directly.
--- e.g., we may want to implement dash only going in a straight line
 local function keys(s,d)
+  local pos = state.player.move.dir
   if s == 'w' then
-    state.player.dir.y = state.player.dir.y - d
+    pos.y = pos.y - d
   elseif s == 's' then
-    state.player.dir.y = state.player.dir.y + d
+    pos.y = pos.y + d
   elseif s == 'a' then
-    state.player.dir.x = state.player.dir.x - d
+    pos.x = pos.x - d
   elseif s == 'd' then
-    state.player.dir.x = state.player.dir.x + d
+    pos.x = pos.x + d
   else
     return
   end
-  state.player.dir:toUnit()
+  pos:toUnit()
 end
 
 function love.keypressed(k,s,isrepeat)
