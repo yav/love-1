@@ -92,9 +92,9 @@ function Rectangle:outline(p)
 
   todo = math.min(len,w)
   push(x+w-todo); push(y+h)
+  len = len - todo
   if len <= 0 then return cs end
 
-  len = len - todo
   push(x); push(y+h-len)
   return cs
 

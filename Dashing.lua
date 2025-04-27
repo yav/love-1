@@ -9,11 +9,11 @@ local meta = { __index = Dashing }
 
 --- @return Dashing
 function Dashing:new(mov)
-  local obj     = {}
-  obj.move      = mov
-  obj.trace     = {}
-  obj.mult      = 3
-  obj.timer = EffectTimer:new(0.25,1)
+  local obj = {}
+  obj.move  = mov
+  obj.trace = {}
+  obj.mult  = 3
+  obj.timer = EffectTimer:new(0.5,1)
 
   obj.onStart = function ()
     obj.move:removeMovingMap()

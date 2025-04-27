@@ -18,7 +18,7 @@ end
 
 function love.load()
   local player          = Entity:new()
-  player.move.bbox.dim  = Vec2D:new(50,60)
+  player.move.bbox.dim  = Vec2D:new(100,60)
   player.move.speed     = 200
   player.color          = Color:new(255,0,255,1)
   state.player          = player
