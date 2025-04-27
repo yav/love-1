@@ -3,6 +3,7 @@
 --- @field duration   number
 --- @field cooldown   number
 --- @field onReady    function   Call this when the cooldown is finished
+--- @field onStart    function   Call this when the timer starts
 --- @field onFinished function   Call this when the active effect is finished
 EffectTimer = {}
 local meta = { __index = EffectTimer }
@@ -19,6 +20,10 @@ function EffectTimer:new(duration,cooldown)
   return setmetatable(obj,meta)
 end
 
+local function  callStart(self)
+  if self.onStart then self.onStart() end
+end
+
 local function callReady(self)
   if self.onReady then self.onReady() end
 end
@@ -29,7 +34,10 @@ end
 
 --- Start the timer, if ready.
 function EffectTimer:start()
-  if self.timer == 0 then self.timer = self.duration end
+  if self.timer == 0 then
+    self.timer = self.duration
+    callStart(self)
+  end
 end
 
 --- Set the timer to the ready state.
