@@ -1,56 +1,46 @@
 require "lib.Vec2D"
 require "lib.Rectangle"
 require "lib.EffectTimer"
+require "lib.Color"
+require "Dashing"
+
 
 --- @class Entity
+--- @field color     Color
 --- @field speed     number
 --- @field dir       Vec2D
 --- @field bbox      Rectangle
---- @field dashTimer EffectTimer
---- @field dashTrace table
+--- @field dash      Dashing
 Entity = {}
 local meta = { __index = Entity }
 
 function Entity:new()
   local obj = {}
+  obj.color = Color:new(255,0,0,1)
   obj.speed = 0
-  obj.dashTimer = EffectTimer:new(0.25,1)
-  obj.dashTrace = {}
-  obj.dashTimer.onFinished = function () obj.dashTrace = {} end
-
   obj.dir   = Vec2D.zero:clone()
   obj.bbox  = Rectangle:new(Vec2D.zero:clone(), Vec2D.zero:clone())
+  obj.dash  = Dashing:new()
   return setmetatable(obj, meta)
 end
 
 function Entity:startDash()
-  self.dashTimer:start()
+  self.dash:start()
 end
 
 function Entity:draw()
-  for i,pos in ipairs(self.dashTrace) do
-    love.graphics.setColor(state.color.r, state.color.g, state.color.b, i/#self.dashTrace)
-    Rectangle:new(pos,self.bbox.dim):draw()
-  end
+  love.graphics.setColor(self.color:unpack())
   self.bbox:draw()
-  if not self.dashTimer:isActive() then
-    love.graphics.setColor(255,255,255)
-    love.graphics.line(self.bbox:outline(self.dashTimer:progress()))
-  end
+  self.dash:draw(self.bbox)
 end
 
 --- @param dt number
 function Entity:update(dt)
-  local speed = self.speed
-  self.dashTimer:update(dt)
-  local dashing = self.dashTimer:isActive()
-  if dashing then
-    self.dashTrace[#self.dashTrace + 1] = self.bbox.topLeft:clone()
-    speed = 3 * speed
-  end
+  local dashing = self.dash:update(dt, self.bbox.topLeft)
+  local speed = dt * self.speed
+  if dashing then speed = self.dash.dashMult * speed end
 
-  local spd   = speed * dt
-  local delta = self.dir:clone():scale(spd)
+  local delta = self.dir:clone():scale(speed)
   if not (delta == Vec2D.zero) then
     state.movingMap:removeObj(self.bbox, self)
     local newP  = self.bbox.topLeft:clone():add(delta)
@@ -58,13 +48,13 @@ function Entity:update(dt)
 
     local blocks = state.obstacles:findCollisions(newR)
     for _,r in ipairs(blocks) do
-      newP:add(self.bbox:clash(r,spd))
+      newP:add(self.bbox:clash(r,speed))
     end
 
     if not dashing then
       local movs = state.movingMap:findCollisions(newR)
       for _,r in ipairs(movs) do
-        newP:add(self.bbox:clash(r.bbox,spd))
+        newP:add(self.bbox:clash(r.bbox,speed))
       end
     end
     self.bbox = newR

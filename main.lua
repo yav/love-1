@@ -18,12 +18,9 @@ function love.draw()
     r:draw()
   end
 
-  love.graphics.setColor(255,0,0)
   for _,e in ipairs(state.enemies) do
     e.move:draw()
   end
-
-  local c = state.color
-  love.graphics.setColor(c.r,c.g,c.b)
+  
   state.player:draw()
 end

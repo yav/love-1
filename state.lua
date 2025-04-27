@@ -2,8 +2,10 @@ require "lib.Rectangle"
 require "lib.Vec2D"
 require "lib.Map2D"
 require "lib.CollisionMap"
+require "lib.Color"
 require "Entity"
 require "Enemy"
+
 
 --- @class State
 state = {}
@@ -18,6 +20,7 @@ function love.load()
   local player      = Entity:new()
   player.bbox.dim   = Vec2D:new(50,60)
   player.speed      = 200
+  player.color      = Color:new(255,0,255,1)
   state.player      = player
 
   local es = {}
@@ -27,8 +30,6 @@ function love.load()
     es[#es+1] = e
   end
   state.enemies = es
-
-  state.color     = {r = 255,g = 0,b = 255}
 
   state.movingMap = CollisionMap:new(100)
   state.obstacles = CollisionMap:new(100)

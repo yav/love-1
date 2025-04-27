@@ -1,7 +1,9 @@
 require "lib.Vec2D"
 require "lib.Rectangle"
 require "lib.EffectTimer"
+require "lib.Color"
 require "Entity"
+
 
 Enemy = {}
 local meta = { __index = Enemy }
@@ -9,11 +11,12 @@ local meta = { __index = Enemy }
 function Enemy:new()
   local obj = {}
 
-  local move = Entity:new()
-  move.bbox.dim = Vec2D:new(32,32)
-  move.speed = 150
-  move.dir = Vec2D:new(1,1)
-  obj.move = move
+  local ent = Entity:new()
+  ent.bbox.dim = Vec2D:new(32,32)
+  ent.speed = 150
+  ent.dir = Vec2D:new(1,1)
+  ent.color = Color:new(255,0,0,1)
+  obj.move = ent
 
   obj.nextAction = EffectTimer:new(0.5,1)
   obj.nextAction.onReady = function ()
