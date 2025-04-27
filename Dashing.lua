@@ -5,6 +5,8 @@
 Dashing = {}
 local meta = { __index = Dashing }
 
+
+--- @return Dashing
 function Dashing:new()
   local obj = {}
   obj.dashTrace = {}
@@ -14,17 +16,19 @@ function Dashing:new()
   return setmetatable(obj, meta)
 end
 
+
 function Dashing:start()
   self.dashTimer:start()
 end
 
+--- @return boolean
 function Dashing:isActive()
   return self.dashTimer:isActive()
 end
 
---- @param dt number
---- @param loc Vec2D
---- @return boolean
+--- @param dt number  Amount of time that has passed
+--- @param loc Vec2D  Location of the object that is dashing
+--- @return boolean b Are we currently dashing
 function Dashing:update(dt, loc)
   self.dashTimer:update(dt)
   local active = self.dashTimer:isActive()
@@ -35,6 +39,7 @@ function Dashing:update(dt, loc)
   return active
 end
 
+--- @param obj Rectangle
 function Dashing:draw(obj)
   local n = #self.dashTrace
 
