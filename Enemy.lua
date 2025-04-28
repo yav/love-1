@@ -1,16 +1,16 @@
 require "lib.Vec2D"
-require "lib.Rectangle"
 require "lib.EffectTimer"
 require "lib.Color"
 require "Entity"
 
 
 --- @class Enemy
---- @field ent Enemy
+--- @field ent Entity
 --- @field nextAction EffectTimer
 Enemy = {}
 local meta = { __index = Enemy }
 
+--- @returns Enemy
 function Enemy:new()
   local obj = {}
 
@@ -31,6 +31,7 @@ function Enemy:new()
   return setmetatable(obj,meta)
 end
 
+--- @param dt number
 function Enemy:update(dt)
   self.nextAction:update(dt)
   self.ent:update(dt)

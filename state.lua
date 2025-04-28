@@ -1,6 +1,5 @@
-require "lib.Rectangle"
 require "lib.Vec2D"
-require "lib.Map2D"
+require "lib.Rectangle"
 require "lib.CollisionMap"
 require "lib.Color"
 require "Entity"

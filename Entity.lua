@@ -1,6 +1,3 @@
-require "lib.Vec2D"
-require "lib.Rectangle"
-require "lib.EffectTimer"
 require "lib.Color"
 require "Moving"
 require "Dashing"
@@ -27,7 +24,7 @@ end
 
 function Entity:draw()
   love.graphics.setColor(self.color:unpack())
-  self.move.bbox:draw()
+  self.move:draw()
   self.dash:draw()
 end
 

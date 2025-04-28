@@ -1,3 +1,6 @@
+require "lib.Vec2D"
+require "lib.Rectangle"
+
 --- @class Moving           Things that move around
 --- @field speed number     How fast we are moving
 --- @field dir   Vec2D      Unit vector in the direction we are moving
@@ -14,13 +17,15 @@ function Moving:new()
 end
 
 function Moving:draw()
-  
+  self.bbox:draw()
 end
 
+--- @return Vec2D
 function Moving:position()
   return self.bbox.topLeft
 end
 
+--- @return boolean
 function Moving:isMoving()
   return self.speed > 0 and not (self.dir == Vec2D.zero)
 end
