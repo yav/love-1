@@ -1,5 +1,8 @@
 require "lib.Map2D"
 
+--- @class CollisionMap
+--- @field size number
+--- @field data Map2D
 CollisionMap = {}
 local meta = { __index = CollisionMap }
 

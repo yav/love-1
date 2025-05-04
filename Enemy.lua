@@ -31,8 +31,20 @@ function Enemy:new()
   return setmetatable(obj,meta)
 end
 
+function Enemy:getBBox()
+  return self.ent:getBBox()
+end
+
+function Enemy:getTeam()
+  return state.enemyTeam
+end
+
 --- @param dt number
 function Enemy:update(dt)
   self.nextAction:update(dt)
-  self.ent:update(dt)
+  self.ent:update(dt, self)
+end
+
+function Enemy:draw()
+  self.ent:draw()
 end

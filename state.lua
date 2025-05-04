@@ -3,8 +3,9 @@ require "lib.Rectangle"
 require "lib.CollisionMap"
 require "lib.Color"
 require "Entity"
+require "Player"
 require "Enemy"
-
+require "Team"
 
 --- @class State
 state = {}
@@ -16,21 +17,19 @@ local function addObj(r)
 end
 
 function love.load()
-  local player          = Entity:new()
-  player.move.bbox.dim  = Vec2D:new(100,60)
-  player.move.speed     = 200
-  player.color          = Color:new(255,0,255,1)
-  state.player          = player
+  state.playerTeam = Team:new()
+  state.enemyTeam  = Team:new()
+
+  state.player = Player:new()
+  state.playerTeam:addMember(state.player)
 
   local es = {}
   for i = 1,10 do
     local e = Enemy:new()
     e.ent.move.bbox.topLeft = Vec2D:new(200+40*i,200)
-    es[#es+1] = e
+    state.enemyTeam:addMember(e)
   end
-  state.enemies = es
 
-  state.movingMap = CollisionMap:new(100)
   state.obstacles = CollisionMap:new(100)
   state.objs      = {}
   for i = 1,10 do
@@ -45,10 +44,8 @@ end
 
 
 function love.update(dt)
-  state.player:update(dt)
-  for _,e in ipairs(state.enemies) do
-    e:update(dt)
-  end
+  state.playerTeam:update(dt)
+  state.enemyTeam:update(dt)
 end
 
 

@@ -3,7 +3,7 @@ require "controls"
 
 local function focusPlayer()
   local w,h = love.graphics.getDimensions()
-  local pt = state.player.move.bbox
+  local pt = state.player:getBBox()
   local x,y = pt.topLeft:parts()
   local pw,ph = pt.dim:parts()
   love.graphics.translate((w - pw)/2-x,(h-ph)/2-y)
@@ -18,9 +18,6 @@ function love.draw()
     r:draw()
   end
 
-  for _,e in ipairs(state.enemies) do
-    e.ent:draw()
-  end
-  
-  state.player:draw()
+  state.enemyTeam:draw()
+  state.playerTeam:draw()
 end

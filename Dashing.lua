@@ -14,14 +14,8 @@ function Dashing:new(mov)
   obj.trace = {}
   obj.mult  = 3
   obj.timer = EffectTimer:new(0.5,1)
-
-  obj.onStart = function ()
-    obj.move:removeMovingMap()
-  end
-
   obj.timer.onFinished = function ()
     obj.trace = {}
-    obj.move:addMovingMap()
   end
   return setmetatable(obj, meta)
 end

@@ -1,7 +1,7 @@
 
 -- XXX: don't modify player position directly.
 local function keys(s,d)
-  local pos = state.player.move.dir
+  local pos = state.player.ent.move.dir
   if s == 'w' then
     pos.y = pos.y - d
   elseif s == 's' then
@@ -18,7 +18,7 @@ end
 
 function love.keypressed(k,s,isrepeat)
   if isrepeat then return end
-  if s == 'space' then state.player:startDash(); return end
+  if s == 'space' then state.player.ent:startDash(); return end
   keys(s,1)
 end
 
