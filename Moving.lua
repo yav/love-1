@@ -20,6 +20,11 @@ function Moving:draw()
   self.bbox:draw()
 end
 
+--- @return Rectangle
+function Moving:getBBox()
+  return self.bbox
+end
+
 --- @return Vec2D
 function Moving:position()
   return self.bbox.topLeft

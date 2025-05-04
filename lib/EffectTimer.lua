@@ -2,9 +2,9 @@
 --- @field timer      number
 --- @field duration   number
 --- @field cooldown   number
---- @field onReady    function   Call this when the cooldown is finished
---- @field onStart    function   Call this when the timer starts
---- @field onFinished function   Call this when the active effect is finished
+--- @field onReady    function?   Call this when the cooldown is finished
+--- @field onStart    function?   Call this when the timer starts
+--- @field onFinished function?   Call this when the active effect is finished
 EffectTimer = {}
 local meta = { __index = EffectTimer }
 

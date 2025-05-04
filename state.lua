@@ -42,6 +42,11 @@ function love.load()
   end
 end
 
+--- @param team Team
+function state:otherTeam(team)
+  if team == self.playerTeam then return self.enemyTeam end
+  return self.playerTeam
+end
 
 function love.update(dt)
   state.playerTeam:update(dt)
