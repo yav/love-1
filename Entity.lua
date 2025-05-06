@@ -32,6 +32,10 @@ function Entity:getBBox()
   return self.move.bbox
 end
 
+function Entity:shot(b)
+  print("we got shot by a bullet for " .. tostring(b.damage))
+end
+
 --- @param dt number Amount of time that has passed
 function Entity:update(dt,owner)
   local dashing = self.dash:update(dt)

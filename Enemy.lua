@@ -48,3 +48,8 @@ end
 function Enemy:draw()
   self.ent:draw()
 end
+
+
+function Enemy:shot(b)
+  self.ent:shot(b)
+end

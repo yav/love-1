@@ -19,9 +19,11 @@ end
 function love.keypressed(k,s,isrepeat)
   if isrepeat then return end
   if s == 'space' then state.player.ent:startDash(); return end
+  if s == 'e' then state.player.gun:startShooting(); return end
   keys(s,1)
 end
 
 function love.keyreleased(k,s)
+  if s == 'e' then state.player.gun:stopShooting(); return end
   keys(s,-1)
 end

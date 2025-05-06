@@ -1,3 +1,6 @@
+require "Entity"
+require "Gun"
+
 Player = {}
 local meta = { __index = Player }
 
@@ -12,12 +15,14 @@ function Player:new()
   obj.dashAbility = function (other)
     print("Player " .. tostring(obj) .. " dashed through " .. tostring(other))
   end
+  obj.gun = Gun:new(obj)
 
   return  setmetatable(obj, meta)
 end
 
 -- @param dt number
 function Player:update(dt)
+  self.gun:update(dt)
   self.ent:update(dt, self)
 end
 

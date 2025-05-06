@@ -15,6 +15,10 @@ function Rectangle:new(topLeft,dim)
   return setmetatable(obj,meta)
 end
 
+function Rectangle:clone()
+  return Rectangle:new(self.topLeft:clone(), self.dim:clone())
+end
+
 
 --- [const] Check if this rectangle is entirely to the left of another.
 --- @param r Rectangle
